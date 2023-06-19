@@ -25,7 +25,7 @@ Partial Class Form1
         Me.ProjectPathText = New System.Windows.Forms.TextBox()
         Me.ProjectPathHint = New System.Windows.Forms.Label()
         Me.Browse = New System.Windows.Forms.Button()
-        Me.CreateProject = New System.Windows.Forms.Button()
+        Me.CreateProjectButton = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
         Me.MountImage = New System.Windows.Forms.Button()
         Me.CommitImage = New System.Windows.Forms.Button()
@@ -63,15 +63,15 @@ Partial Class Form1
         Me.Browse.Text = "Parcourir..."
         Me.Browse.UseVisualStyleBackColor = True
         '
-        'CreateProject
+        'CreateProjectButton
         '
-        Me.CreateProject.Enabled = False
-        Me.CreateProject.Location = New System.Drawing.Point(503, 93)
-        Me.CreateProject.Name = "CreateProject"
-        Me.CreateProject.Size = New System.Drawing.Size(75, 23)
-        Me.CreateProject.TabIndex = 3
-        Me.CreateProject.Text = "Créer"
-        Me.CreateProject.UseVisualStyleBackColor = True
+        Me.CreateProjectButton.Enabled = False
+        Me.CreateProjectButton.Location = New System.Drawing.Point(503, 93)
+        Me.CreateProjectButton.Name = "CreateProjectButton"
+        Me.CreateProjectButton.Size = New System.Drawing.Size(75, 23)
+        Me.CreateProjectButton.TabIndex = 3
+        Me.CreateProjectButton.Text = "Créer"
+        Me.CreateProjectButton.UseVisualStyleBackColor = True
         '
         'FolderBrowserDialog1
         '
@@ -171,7 +171,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Export)
         Me.Controls.Add(Me.CommitImage)
         Me.Controls.Add(Me.MountImage)
-        Me.Controls.Add(Me.CreateProject)
+        Me.Controls.Add(Me.CreateProjectButton)
         Me.Controls.Add(Me.Browse)
         Me.Controls.Add(Me.ProjectPathHint)
         Me.Controls.Add(Me.ProjectPathText)
@@ -188,7 +188,7 @@ Partial Class Form1
     Friend WithEvents ProjectPathText As TextBox
     Friend WithEvents ProjectPathHint As Label
     Friend WithEvents Browse As Button
-    Friend WithEvents CreateProject As Button
+    Friend WithEvents CreateProjectButton As Button
     Friend WithEvents FolderBrowserDialog1 As FolderBrowserDialog
     Friend WithEvents MountImage As Button
     Friend WithEvents CommitImage As Button

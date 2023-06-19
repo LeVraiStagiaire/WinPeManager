@@ -1,4 +1,6 @@
-﻿Public Class Form1
+﻿Imports System.IO
+
+Public Class Form1
 
     Private ProjectPath As String
 
@@ -16,11 +18,11 @@
             If IO.File.Exists(ProjectPath + "\Media\sources\boot.wim") Then
                 MountImage.Enabled = True
                 Export.Enabled = True
-                CreateProject.Enabled = False
+                CreateProjectButton.Enabled = False
             Else
                 MountImage.Enabled = False
                 Export.Enabled = False
-                CreateProject.Enabled = True
+                CreateProjectButton.Enabled = True
             End If
         Else
             ProjectPathText.ForeColor = Color.Red
@@ -48,7 +50,7 @@
         Process.Close()
         MessageBox.Show("Image montée dans " + ProjectPath + "\mount !", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
         MountImage.Enabled = False
-        MountImage.ResetText()
+        MountImage.Text = "Monter"
         CommitImage.Enabled = True
         UnmountImage.Enabled = True
         Export.Enabled = True
@@ -73,7 +75,7 @@
         Process.WaitForExit()
         Process.Close()
         MessageBox.Show("Image enregistrée !", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        CommitImage.ResetText()
+        CommitImage.Text = "Sauvegarder"
     End Sub
 
     Private Sub UnmountImage_Click(sender As Object, e As EventArgs) Handles UnmountImage.Click
@@ -99,7 +101,7 @@
         MountImage.Enabled = True
         CommitImage.Enabled = False
         UnmountImage.Enabled = False
-        UnmountImage.ResetText()
+        UnmountImage.Text = "Démonter"
         Export.Enabled = True
     End Sub
 
@@ -110,16 +112,16 @@
     Private Sub SaveFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles SaveFileDialog1.FileOk
         Export.Text = "Exportation..."
         Dim StartInfo As New ProcessStartInfo With {
-                    .FileName = "cmd.exe",
-                    .WorkingDirectory = "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\",
-                    .Arguments = "/k C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\DandISetEnv.bat",
-                    .Verb = "runas",
-                    .RedirectStandardInput = True,
-                    .RedirectStandardOutput = True,
-                    .RedirectStandardError = True,
-                    .UseShellExecute = False,
-                    .CreateNoWindow = True
-                }
+            .FileName = "cmd.exe",
+            .WorkingDirectory = "C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\",
+            .Arguments = "/k C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\DandISetEnv.bat",
+            .Verb = "runas",
+            .RedirectStandardInput = True,
+            .RedirectStandardOutput = True,
+            .RedirectStandardError = True,
+            .UseShellExecute = False,
+            .CreateNoWindow = True
+        }
         Dim Process As Process = Process.Start(StartInfo)
         Process.StandardInput.WriteLine("Makewinpemedia /iso /f " + ProjectPath + "\Media " + SaveFileDialog1.FileName)
         Process.StandardInput.WriteLine("exit")
@@ -128,6 +130,30 @@
         Process.WaitForExit()
         Process.Close()
         MessageBox.Show("Image exportée !", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Export.ResetText()
+        Export.Text = "Exporter"
+    End Sub
+
+    Private Sub CreateProjectButton_Click(sender As Object, e As EventArgs) Handles CreateProjectButton.Click
+        If CreateProject.ShowDialog() = DialogResult.OK Then
+            Dim StartInfo As New ProcessStartInfo With {
+                .FileName = "cmd.exe",
+                .WorkingDirectory = Directory.GetCurrentDirectory(),
+                .Verb = "runas",
+                .RedirectStandardInput = True,
+                .RedirectStandardOutput = True,
+                .RedirectStandardError = True,
+                .UseShellExecute = False,
+                .CreateNoWindow = True
+            }
+            Dim Process As Process = Process.Start(StartInfo)
+            MessageBox.Show(CreateProject.ComboBox1.SelectedItem)
+            Process.StandardInput.WriteLine("copype " + CreateProject.ComboBox1.SelectedItem + " " + ProjectPath)
+            Process.StandardInput.WriteLine("exit")
+            Debug.WriteLine("Command: " + StartInfo.Arguments)
+            Debug.WriteLine(Process.StandardOutput.ReadToEnd)
+            Process.WaitForExit()
+            Process.Close()
+            MessageBox.Show("Image exportée !", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
     End Sub
 End Class
